@@ -44,7 +44,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Book addBook(String title, String author, boolean isAvailable) {
+    public Book addBook(String title, String author) {
         return null;
     }
 
