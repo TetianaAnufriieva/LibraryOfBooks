@@ -33,25 +33,45 @@ public class BookRepositoryImpl implements BookRepository {
         );
     }
 
+    //===============================================
+
+    // изменение статуса доступности книги
     @Override
     public void updateBookStatus(int id, boolean newStatus) {
-
+        Book book = findBookById(id);
+        if (book != null) {
+            book.setAvailable(newStatus);
+        }
     }
 
+    // удаление книги по id
     @Override
     public void removeBook(int id) {
-
+        books.remove(findBookById(id));
     }
 
+    // добавление книги по названию и автору
     @Override
     public Book addBook(String title, String author) {
+        Book newBook = new Book(currentId.getAndIncrement(), title, author, true);
+        books.add(newBook);
+        return newBook;
+    }
+
+    // поиск книги по id (перебирает список книг и возвращает ее)
+    @Override
+    public Book findBookById(int id) {
+        for(Book book : books) {
+            if(book.getId() == id) {
+                return book;
+            }
+        }
         return null;
     }
 
-    @Override
-    public Book findBookById(int id) {
-        return null;
-    }
+    //===============================================
+
+
 
     @Override
     public MyList<Book> findBooksByTitle(String title) {
