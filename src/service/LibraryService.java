@@ -15,7 +15,7 @@ public interface LibraryService {
     boolean loginUser (String email, String password);
     //вылогиниться
     void logoutUser();
-
+//============================================================
     //todo не void. Надо проверять, что пользователь залогинился как админ
     Book addBook(String title, String author);
 

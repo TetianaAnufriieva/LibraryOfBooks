@@ -16,7 +16,7 @@ CRUD - операция
  */
 
     // добавление книги
-    Book addBook(String title, String author, boolean isAvailable);
+    Book addBook(String title, String author);
 
     // поиск книг по id
     Book findBookById(int id);
