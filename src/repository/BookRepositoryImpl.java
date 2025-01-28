@@ -46,12 +46,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     // удаление книги по id
     @Override
-    public void removeBook(int id) {
+    public boolean removeBook(int id) {
         Book book = findBookById(id);
-
-        if (book != null) return;
-
+        if (book == null) return false;
         books.remove(book);
+        return true;
     }
 
     // добавление книги по названию и автору

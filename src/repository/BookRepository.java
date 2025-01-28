@@ -38,6 +38,6 @@ CRUD - операция
     void updateBookStatus (int id, boolean newStatus);
 
     // удаление
-    void removeBook(int id);
+    boolean removeBook(int id);
 
 }
