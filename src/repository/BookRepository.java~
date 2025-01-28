@@ -35,12 +35,10 @@ CRUD - операция
 
     // изменение статуса
     // доступна книга или нет
-
-    //void updateBookStatus (int id, boolean newStatus);
-
     void updateBookStatus (int id, boolean newStatus);
 
     // удаление
-    void removeBook(int id);
+    //void removeBook(int id);
+    boolean removeBook(int id);
 
 }

@@ -50,8 +50,17 @@ public class BookRepositoryImpl implements BookRepository {
         Book book = findBookById(id);
 
         if (book != null) return;
-
+        
         books.remove(book);
+
+        /*
+        Please, add in the method removeBook(int id):
+    Book book = findBookById(id);
+    if (book != null) {
+    book.remove(findBookById(id));
+    }
+    otherwise NullPointerException is possible
+         */
     }
 
     // добавление книги по названию и автору
