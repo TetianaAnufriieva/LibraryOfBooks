@@ -6,7 +6,6 @@ import utils.MyList;
 
 public interface LibraryService {
     /**
-     * @Lena
      * взять книгу
      * @param bookId
      * @return Book
@@ -14,7 +13,6 @@ public interface LibraryService {
     Book borrowBook(int bookId);
 
     /**
-     * @Lena
      * вернуть книгу
      * @param bookId
      * @return Book
@@ -22,7 +20,6 @@ public interface LibraryService {
     Book returnBook(int bookId);
 
     /**
-     * @Lena
      * зарегистрировать пользователя
      * @param email
      * @param password
@@ -31,7 +28,6 @@ public interface LibraryService {
     User registerUser(String email, String password);
 
     /**
-     * @Lena
      * залогиниться
      * @param email
      * @param password
@@ -40,13 +36,11 @@ public interface LibraryService {
     boolean loginUser (String email, String password);
 
     /**
-     * @Lena
      * вылогиниться
      */
     void logoutUser();
 
     /**
-     * @Lena
      * удалить книгу
      * @param id
      * @return boolean
