@@ -175,7 +175,7 @@ public class Menu {
                 int bookId = scanner.nextInt();
                 System.out.print("Введите ID пользователя: ");
                 int userId = scanner.nextInt();
-                service.borrowBook(bookId, userId);
+                service.borrowBook(bookId);
                 System.out.println("Книга успешно взята.");
                 break;
 
@@ -184,7 +184,7 @@ public class Menu {
                 int returnBookId = scanner.nextInt();
                 System.out.print("Введите ID пользователя: ");
                 int returnUserId = scanner.nextInt();
-                service.returnBook(returnBookId, returnUserId);
+                service.returnBook(returnBookId);
                 System.out.println("Книга успешно возвращена.");
                 break;
 

@@ -8,6 +8,7 @@ import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import utils.MyArrayList;
 import utils.MyList;
+import utils.PersonValidation;
 
 public class LibraryServiceImpl implements LibraryService {
 
@@ -20,14 +21,58 @@ public class LibraryServiceImpl implements LibraryService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * @Lena
+     * войти в систему
+     * авторизация пользователя
+     * @param email
+     * @param password
+     * @return
+     */
     @Override
     public boolean loginUser(String email, String password) {
-        return false;
+        if (email == null || password == null) return false;
+
+        User user = userRepository.findUserByEmail(email);
+
+        if (user == null) {
+            System.out.println("email введен неверно.");
+            return false;
+        }
+
+        if (!user.getPassword().equals(password)) {
+            System.out.println("password введен неверно.");
+            return false;
+        }
+        if (user.getRole() == Role.BLOCKED) {
+            System.out.println("Ваша учётная запись заблокирована.");
+            return false;
+        }
+        activeUser = user;
+
+        return true;
     }
 
+    /**
+     * @Lena
+     * выйти из системы
+     * вылогиниться
+     */
     @Override
     public void logoutUser() {
+        activeUser = null;
+    }
 
+    /** //TODO
+     * @Lena
+     * удалить книгу
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeBook(int id) {
+
+        return false;
     }
 
     @Override
@@ -67,19 +112,72 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
+    /**
+     * @Lena
+     * взять книгу
+     * @param bookId
+     * @return
+     */
     @Override
-    public void borrowBook(int bookId, int userId) {
+    public Book borrowBook(int bookId) {
+        Book book = bookRepository.findBookById(bookId);
+        if (book != null) {
+            if (book.isAvailable() == true) {
+                book.setAvailable(false);
+                return book;
+            }
+        }
+            System.out.println("Такая книга не существует.");
 
+        return null;
     }
 
+    /**
+     * @Lena
+     * вернуть книгу
+     * @param bookId
+     * @return
+     */
     @Override
-    public void returnBook(int bookId, int userId) {
+    public Book returnBook(int bookId) {
+        Book book = bookRepository.findBookById(bookId);
 
+        if (book != null) {
+            if (book.isAvailable() == false) {
+                book.setAvailable(true);
+                return book;
+            }
+        }
+            System.out.println("Такая книга не существует.");
+
+        return null;
     }
 
+    /**
+     * @Lena
+     * зарегистрировать пользователя
+     * @param email
+     * @param password
+     * @return
+     */
     @Override
     public User registerUser(String email, String password) {
-        return null;
+       if (!PersonValidation.isEmailValid(email)) {
+           System.out.println("Некорректно введен email.");
+       return null;
+       }
+       if (!PersonValidation.isPasswordValid(password)) {
+           System.out.println("Некорректно введен пароль.");
+           return null;
+       }
+       if (userRepository.isEmailExist(email)){
+           System.out.println("Пользователь с таким email уже существует.");
+           return null;
+       }
+
+       User user = userRepository.addUser(email, password);
+
+        return user;
     }
 
 
