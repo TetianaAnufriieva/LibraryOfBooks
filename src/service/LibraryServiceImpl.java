@@ -23,6 +23,16 @@ public class LibraryServiceImpl implements LibraryService {
 
     /**
      * @Lena
+     * получить активного пользователя
+     * @return
+     */
+    public User getActiveUser() {
+        return activeUser;
+    }
+
+
+    /**
+     * @Lena
      * войти в систему
      * авторизация пользователя
      * @param email
@@ -120,6 +130,33 @@ public class LibraryServiceImpl implements LibraryService {
 
     /**
      * @Lena
+     * заблокировать пользователя
+     * @param email
+     * @return
+     */
+    @Override
+    public boolean isUserBlocked(String email) {
+        User user = userRepository.findUserByEmail(email);
+        if (user.getRole() == Role.BLOCKED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @Lena
+     * существует ли такой email
+     * @param email
+     * @return
+     */
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.isEmailExist(email);
+    }
+
+    /**
+     * @Lena
      * взять книгу
      * @param bookId
      * @return
@@ -167,23 +204,26 @@ public class LibraryServiceImpl implements LibraryService {
      * @return
      */
     @Override
-    public User registerUser(String email, String password) {
+    public boolean registerUser(String email, String password) {
        if (!PersonValidation.isEmailValid(email)) {
            System.out.println("Некорректно введен email.");
-       return null;
+       return false;
        }
        if (!PersonValidation.isPasswordValid(password)) {
            System.out.println("Некорректно введен пароль.");
-           return null;
+           return false;
        }
        if (userRepository.isEmailExist(email)){
            System.out.println("Пользователь с таким email уже существует.");
-           return null;
+           return false;
        }
 
        User user = userRepository.addUser(email, password);
+       if (activeUser == null) {
+           activeUser = user;
+       }
 
-        return user;
+        return true;
     }
 
 

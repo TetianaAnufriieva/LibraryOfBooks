@@ -5,6 +5,23 @@ import model.User;
 import utils.MyList;
 
 public interface LibraryService {
+
+    /**
+     * @Lena
+     * пользователь заблокирован
+     * @param email
+     * @return
+     */
+    boolean isUserBlocked(String email);
+
+    /**
+     * @Lena
+     * существует ли такой email
+     * @param email
+     * @return User
+     */
+    boolean isEmailExist(String email);
+
     /**
      * @Lena
      * взять книгу
@@ -28,7 +45,7 @@ public interface LibraryService {
      * @param password
      * @return User
      */
-    User registerUser(String email, String password);
+    boolean registerUser(String email, String password);
 
     /**
      * @Lena
@@ -68,4 +85,10 @@ public interface LibraryService {
     // todo список всех книг для меню администратора
     MyList<Book> listAllBooksAdmin();
 
+    /**
+     * @Lena
+     * получить активного пользователя
+     * @return
+     */
+   User getActiveUser();
 }
