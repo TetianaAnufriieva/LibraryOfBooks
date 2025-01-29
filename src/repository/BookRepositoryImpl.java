@@ -75,56 +75,58 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public MyList<Book> findBooksByTitle(String title) {
+        MyList<Book> resultTitle = new MyArrayList<>();
 
-        MyList<Book> resultTitel = new MyArrayList<>();
         for (Book book : books) {
-            if (book.getTitle().contains(title)) {
-                resultTitel.add(book);
-                if (resultTitel.size() == 5) {
-                    break;
-                }
-
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                resultTitle.add(book);
+            if (resultTitle.size() == 5) {
+                break;
             }
 
         }
 
-        return resultTitel;
+        return resultTitle;
     }
 
+        @Override
         public MyList<Book> findBooksByAuthor(String author) {
-        MyList<Book> resultAuthor = new MyArrayList<>();
-        for (Book book : books) {
-            if (book.getAuthor().contains(author)) { //book.getAuthor().equals(author)
-                resultAuthor.add(book);
-                if (resultAuthor.size() == 5) {
-                    break;
+            MyList<Book> resultAuthor = new MyArrayList<>();
+            for (Book book : books) {
+                    if (book.getAuthor().contains(author)) { //book.getAuthor().equals(author)
+                        resultAuthor.add(book);
+                        if (resultAuthor.size() == 5) {
+                            break;
 
 
+                        }
+                    }
                 }
+
+                return resultAuthor;
             }
-        }
 
-        return resultAuthor;
-    }
+            @Override
+            public MyList<Book> getAllBooks () {
 
-    @Override
-    public MyList<Book> getAllBooks() {
 
-        return books;
+                return books;
 
-    }
-
-    @Override
-    public MyList<Book> getAvailableBooks() {
-        MyList<Book> availableBooks = new MyArrayList<>();
-        for (Book book : books) {
-            if (book.isAvailable()) {
-                availableBooks.add(book);
             }
+
+
+            @Override
+            public MyList<Book> getAvailableBooks () {
+
+                MyList<Book> availableBooks = new MyArrayList<>();
+                for (Book book : books) {
+                    if (book.isAvailable()) {
+                        availableBooks.add(book);
+                    }
+                }
+                return availableBooks;
+
+
+            }
+
         }
-        return availableBooks;
-
-
-    }
-
-}
