@@ -5,8 +5,6 @@ import model.User;
 import utils.MyArrayList;
 import utils.MyList;
 
-import java.util.Objects;
-
 public class UserRepositoryImpl implements UserRepository {
 
     private final MyList<User> users;
@@ -33,33 +31,53 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User addUser(String email, String password) {
-    return null;
+        // Проверяем, существует ли уже пользователь с таким email
+        if (isEmailExist(email)) {
+            return null; // или выбросить исключение
+        }
+
+        User user = new User(email, password);
+        users.add(user);
+        return user;
+
     }
 
     @Override
     public void removeUser(String email) {
-
+        users.removeIf(user -> user.getEmail().equals(email));
     }
 
     @Override
     public User findUserByEmail(String email) {
-        return null;
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null; // Пользователь не найден
     }
 
     @Override
     public MyList<User> getAllUsers() {
-        return null;
+        // Предполагаем, что MyList - это обертка над ArrayList
+        MyList<User> myList = new MyList<>();
+        myList.addAll((User) users);
+        return myList;
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        return false;
+        return users.stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
     @Override
     public boolean updatePassword(String email, String newPassword) {
+        User user = findUserByEmail(email);
+        if (user != null) {
+            user.setPassword(newPassword);
+            return true;
+        }
         return false;
     }
-
 
 }

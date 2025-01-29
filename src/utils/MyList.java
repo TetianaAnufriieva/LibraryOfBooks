@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.stream.DoubleStream;
+
 public interface MyList<T> extends Iterable<T> {
 
 
@@ -97,4 +99,7 @@ public interface MyList<T> extends Iterable<T> {
     void set (int index, T value);
 
 
+    DoubleStream stream();
+
+    void removeIf(Object o);
 }
