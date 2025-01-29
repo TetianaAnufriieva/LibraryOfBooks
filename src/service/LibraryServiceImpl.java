@@ -63,7 +63,7 @@ public class LibraryServiceImpl implements LibraryService {
         activeUser = null;
     }
 
-    /** //TODO
+    /**
      * @Lena
      * удалить книгу
      * @param id
@@ -71,7 +71,13 @@ public class LibraryServiceImpl implements LibraryService {
      */
     @Override
     public boolean removeBook(int id) {
-
+        Book book = bookRepository.findBookById(id);
+        if (book != null) {
+            bookRepository.removeBook(id);
+            return true;
+        } else {
+            System.out.println("Такая книга не существует.");
+        }
         return false;
     }
 
