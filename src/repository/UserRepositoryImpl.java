@@ -44,8 +44,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void removeUser(String email) {
-        users.removeIf(user -> user.getEmail().equals(email));
+
     }
+
 
     @Override
     public User findUserByEmail(String email) {
@@ -62,7 +63,7 @@ public class UserRepositoryImpl implements UserRepository {
         // Предполагаем, что MyList - это обертка над ArrayList
         MyList<User> myList = new MyList<>();
         myList.addAll((User) users);
-        return myList;
+        return users;
     }
 
     @Override
@@ -73,11 +74,25 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean updatePassword(String email, String newPassword) {
         User user = findUserByEmail(email);
-        if (user != null) {
-            user.setPassword(newPassword);
-            return true;
+        if (user == null) {
+            System.out.println("Пользователь не найден.");
+            return false;
         }
-        return false;
-    }
 
+        if (user.getRole() == Role.BLOCKED) {
+            System.out.println("Blocked users cannot change passwords.");
+            return false;
+        }
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("New password cannot be empty or null.");
+            return false;
+        }
+
+        user.setPassword(newPassword);
+        System.out.println("Password updated successfully");
+        return true;
+
+
+    }
 }
