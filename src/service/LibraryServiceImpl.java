@@ -30,6 +30,40 @@ public class LibraryServiceImpl implements LibraryService {
         return activeUser;
     }
 
+    /**
+     * @Lena
+     * получить список всех пользователей
+     * @return
+     */
+    @Override
+    public MyList<User> userList() {
+        MyList<User> list = userRepository.getAllUsers();
+        if (list != null) {
+            return list;
+        }
+        return null;
+    }
+
+    /**
+     * @Lena
+     * редактировать (изменить) книги
+     * @param id
+     * @param title
+     * @param author
+     * @return
+     */
+    @Override
+    public boolean bookUpdateById(int id, String title, String author) {
+        Book book = bookRepository.findBookById(id);
+        if (book != null) {
+            bookRepository.bookUpdateById(id, title, author);
+            return true;
+        } else {
+            System.out.println("Такая книга не существует.");
+        }
+        return false;
+    }
+
 
     /**
      * @Lena
@@ -127,6 +161,44 @@ public class LibraryServiceImpl implements LibraryService {
 
     }
 
+
+    /**
+     * @Lena
+     * обновить статус пользователя
+     * @param email
+     * @param role
+     * @return
+     */
+    @Override
+    public boolean userStatusUpdate(String email, Role role) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            userRepository.userStatusUpdate(email, role);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @Lena
+     * обновить пароль
+     * @param email
+     * @param newPassword
+     * @return
+     */
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            if (PersonValidation.isPasswordValid(newPassword)) {
+                userRepository.updatePassword(email, newPassword);
+                return true;
+            } else {
+                System.out.println("Некорректно введен пароль.");
+            }
+        }
+        return false;
+    }
 
     /**
      * @Lena

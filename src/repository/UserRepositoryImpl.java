@@ -61,5 +61,15 @@ public class UserRepositoryImpl implements UserRepository {
         return false;
     }
 
-
+    /**
+     * @Lena
+     * обновление статуса пользователя
+     * @param email
+     * @param role
+     */
+    @Override
+    public void userStatusUpdate(String email, Role role) {
+       User user = findUserByEmail(email);
+       user.setRole(role);
+    }
 }

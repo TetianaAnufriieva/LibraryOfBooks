@@ -37,6 +37,14 @@ CRUD - операция
     // доступна книга или нет
     void updateBookStatus (int id, boolean newStatus);
 
+    /**
+     * @Lena
+     * редактирование (изменить) книги
+     * @param id
+     * @param title
+     * @param author
+     */
+    public void bookUpdateById(int id,String title, String author);
     // удаление
     boolean removeBook(int id);
 

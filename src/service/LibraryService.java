@@ -1,10 +1,30 @@
 package service;
 
 import model.Book;
+import model.Role;
 import model.User;
 import utils.MyList;
 
 public interface LibraryService {
+
+
+    /**
+     * @Lena
+     * обновить статус
+     * @param email
+     * @param role
+     * @return
+     */
+    boolean userStatusUpdate(String email, Role role);
+
+    /**
+     * @Lena
+     * обновить пароль
+     * @param email
+     * @param newPassword
+     * @return
+     */
+    boolean updatePassword(String email, String newPassword);
 
     /**
      * @Lena
@@ -91,4 +111,21 @@ public interface LibraryService {
      * @return
      */
    User getActiveUser();
+
+    /**
+     * @Lena
+     * список всех пользователей
+     * @return
+     */
+    MyList<User> userList();
+
+    /**
+     * @Lena
+     * редактировать (изменить) книги
+     * @param id
+     * @param title
+     * @param author
+     * @return
+     */
+    boolean bookUpdateById(int id,String title,String author);
 }
