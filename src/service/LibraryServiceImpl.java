@@ -71,12 +71,17 @@ public class LibraryServiceImpl implements LibraryService {
      */
     @Override
     public boolean removeBook(int id) {
-        Book book = bookRepository.findBookById(id);
-        if (book != null) {
-            bookRepository.removeBook(id);
-            return true;
+
+        if (activeUser.getRole() == Role.ADMIN) {
+            for(Book book:bookRepository.getAllBooks()) {
+                if(book.getId() == id) {
+                    bookRepository.removeBook(id);
+                    return true;
+                }
+            }
+            System.out.println("Вы ввели не правильный id книги");
         } else {
-            System.out.println("Такая книга не существует.");
+            System.out.println("Удалять книги может только администратор");
         }
         return false;
     }
