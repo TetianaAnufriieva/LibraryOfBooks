@@ -26,8 +26,7 @@ public interface LibraryService {
      // вернуть книгу
     Book returnBook(int bookId);
 
-     // зарегистрировать пользователя
-    boolean registerUser(String email, String password);
+
 
      // залогиниться
     boolean loginUser (String email, String password);
@@ -40,6 +39,8 @@ public interface LibraryService {
 //============================================================
     //todo не void. Надо проверять, что пользователь залогинился как админ
     Book addBook(String title, String author);
+
+    boolean registerUser(String email, String password);
 
     // todo contains or equals
     MyList<Book> searchBooksByTitle(String title);

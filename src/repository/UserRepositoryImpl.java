@@ -106,5 +106,10 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     }
+//TODO
+    @Override
+    public void userStatusUpdate(final String email, final Role role) {
+
+    }
 }
 

@@ -4,9 +4,7 @@ import model.Book;
 import model.Role;
 import model.User;
 import repository.BookRepository;
-import repository.BookRepositoryImpl;
 import repository.UserRepository;
-import utils.MyArrayList;
 import utils.MyList;
 import utils.PersonValidation;
 
@@ -226,18 +224,18 @@ public class LibraryServiceImpl implements LibraryService {
 
  
     @Override
-    public User registerUser(String email, String password) {
+    public boolean registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {
             System.out.println("Некорректно введен email.");
-            return null;
+            return false;
         }
         if (!PersonValidation.isPasswordValid(password)) {
             System.out.println("Некорректно введен пароль.");
-            return null;
+            return false;
         }
         if (userRepository.isEmailExist(email)) {
             System.out.println("Пользователь с таким email уже существует.");
-            return null;
+            return false;
         }
 
         User user = userRepository.addUser(email, password);
