@@ -37,7 +37,7 @@ public class Menu {
         }
         if (isAutorized == true || isRegistration == true) {
             while (true) {
-                System.out.println("Добро пожаловать в меню библиотеки 'Знания Века'!");
+                System.out.println("\nДобро пожаловать в меню библиотеки 'Знания Века'!");
                 System.out.println("1. Меню книг");
                 System.out.println("2. Меню пользователей");
                 System.out.println("3. Меню администратора");
