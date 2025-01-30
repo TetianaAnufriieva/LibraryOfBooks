@@ -3,7 +3,6 @@ package repository;
 import model.User;
 import utils.MyList;
 
-import java.util.List;
 
 public interface UserRepository {
 
