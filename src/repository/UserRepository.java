@@ -3,7 +3,6 @@ package repository;
 import model.User;
 import utils.MyList;
 
-import java.util.List;
 
 public interface UserRepository {
 
@@ -13,7 +12,7 @@ public interface UserRepository {
     User addUser(String email, String password);
 
     //удаление
-    void removeUser(String email);
+    boolean removeUser(String email);
 
     User findUserByEmail(String email);
 
