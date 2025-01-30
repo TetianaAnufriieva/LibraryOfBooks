@@ -13,7 +13,7 @@ public interface UserRepository {
     User addUser(String email, String password);
 
     //удаление
-    void removeUser(String email);
+    boolean removeUser(String email);
 
     User findUserByEmail(String email);
 
