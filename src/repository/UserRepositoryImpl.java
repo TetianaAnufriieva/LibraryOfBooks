@@ -31,10 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User addUser(String email, String password) {
-        // Проверяем, существует ли уже пользователь с таким email
-        if (isEmailExist(email)) {
-            return null; // или выбросить исключение
-        }
+
 
         User user = new User(email, password);
         users.add(user);
@@ -44,61 +41,68 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean removeUser(String email) {
-        User user = findUserByEmail(email);
-        if (user != null) {
-            users.remove(user);
-        }
+        User userToRemove = findUserByEmail(email);
 
-
-        @Override
-        public User findUserByEmail (String email){
-            for (User user : users) {
-                if (user.getEmail().equals(email)) {
-                    return user;
-                }
-            }
-            return null; // Пользователь не найден
-        }
-
-        @Override
-        public MyList<User> getAllUsers () {
-            return users;
-
-        }
-
-        @Override
-        public boolean isEmailExist (String email){
-            for (User user : users) {
-                if (user.getEmail().equals(email)) {
-                    return true;
-                }
-            }
+        if (userToRemove == null) {
+            System.out.println("User with email " + email + " not found.");
             return false;
         }
 
-        @Override
-        public boolean updatePassword (String email, String newPassword){
-            User user = findUserByEmail(email);
-            if (user == null) {
-                System.out.println("Пользователь не найден.");
-                return false;
+        users.remove(userToRemove);
+        System.out.println("User removed successfully: " + userToRemove);
+        return true;
+    }
+
+
+    @Override
+    public User findUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
             }
-
-            if (user.getRole() == Role.BLOCKED) {
-                System.out.println("Blocked users cannot change passwords.");
-                return false;
-            }
-
-            if (newPassword == null || newPassword.trim().isEmpty()) {
-                System.out.println("New password cannot be empty or null.");
-                return false;
-            }
-
-            user.setPassword(newPassword);
-            System.out.println("Password updated successfully");
-            return true;
-
-
         }
+        return null; // Пользователь не найден
+    }
+
+    @Override
+    public MyList<User> getAllUsers() {
+        return users;
+
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        User user = findUserByEmail(email);
+        if (user == null) {
+            System.out.println("User not found.");
+            return false;
+        }
+
+        if (user.getRole() == Role.BLOCKED) {
+            System.out.println("Blocked users cannot change passwords.");
+            return false;
+        }
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("New password cannot be empty or null.");
+            return false;
+        }
+
+        user.setPassword(newPassword);
+        System.out.println("Password updated successfully");
+        return true;
+
+
     }
 }
+
