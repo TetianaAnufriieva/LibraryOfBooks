@@ -25,6 +25,7 @@ public class LibraryServiceImpl implements LibraryService {
     public User getActiveUser() {
         return activeUser;
     }
+ 
 
      // получить список всех пользователей
     @Override
@@ -79,27 +80,33 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.println("Пароль не верный");
         return false;
     }
-
-      // выйти из системы вылогиниться
+ 
     @Override
     public void logoutUser() {
         activeUser = null;
     }
+ 
+ 
 
-      // удалить книгу
     @Override
     public boolean removeBook(int id) {
-        int i = -1;
-        for (Book book : bookRepository.getAllBooks()) {
-            i++;
-            if (book.getId() == id) {
-                bookRepository.removeBook(i);
-                return true;
-            }
+
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Удалять книги может только администратор.");
+            return false;
         }
-        System.out.println("Такая книга не существует.");
-        return false;
+
+        Book book = bookRepository.findBookById(id);
+        if (book == null) {
+            System.out.println("Книга не найдена.");
+            return false;
+        }
+
+        bookRepository.removeBook(book.getId());
+        System.out.println("Книга с ID " + id + " успешно удалена.");
+        return true;
     }
+
 
     @Override
     public Book addBook(String title, String author) {
@@ -138,6 +145,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
+ 
       //обновить статус пользователя
     @Override
     public boolean userStatusUpdate(String email, Role role) {
@@ -182,8 +190,7 @@ public class LibraryServiceImpl implements LibraryService {
         return userRepository.isEmailExist(email);
     }
 
-
-      // взять книгу
+ 
     @Override
     public Book borrowBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -198,8 +205,8 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.println("Такая книга не существует.");
         return null;
     }
-
-      // вернуть книгу
+ 
+ 
     @Override
     public Book returnBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -217,26 +224,23 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
-     // зарегистрировать пользователя
+ 
     @Override
-    public boolean registerUser(String email, String password) {
+    public User registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {
             System.out.println("Некорректно введен email.");
-            return false;
+            return null;
         }
         if (!PersonValidation.isPasswordValid(password)) {
             System.out.println("Некорректно введен пароль.");
-            return false;
+            return null;
         }
         if (userRepository.isEmailExist(email)) {
             System.out.println("Пользователь с таким email уже существует.");
-            return false;
+            return null;
         }
 
         User user = userRepository.addUser(email, password);
-        if (activeUser == null) {
-            activeUser = user;
-        }
 
         return true;
     }

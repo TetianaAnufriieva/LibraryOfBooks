@@ -26,9 +26,9 @@ public class BookRepositoryImpl implements BookRepository {
         books.addAll(
 
                 new Book(currentId.getAndIncrement(), "1984", "George Orwell", true),
-                new Book(currentId.getAndIncrement(), "To Kill a Mockingbird", "Harper Lee",  true),
-                new Book(currentId.getAndIncrement(), "The Lord of the Rings", "J.R.R. Tolkien",  true),
-                new Book(currentId.getAndIncrement(), "Pride and Prejudice", "Jane Austen",  true),
+                new Book(currentId.getAndIncrement(), "To Kill a Mockingbird", "Harper Lee", true),
+                new Book(currentId.getAndIncrement(), "The Lord of the Rings", "J.R.R. Tolkien", true),
+                new Book(currentId.getAndIncrement(), "Pride and Prejudice", "Jane Austen", true),
                 new Book(currentId.getAndIncrement(), "The Adventures of Huckleberry Finn", "Mark Twain", true)
         );
     }
@@ -72,36 +72,70 @@ public class BookRepositoryImpl implements BookRepository {
     // поиск книги по id (перебирает список книг и возвращает ее)
     @Override
     public Book findBookById(int id) {
-        for(Book book : books) {
-            if(book.getId() == id) {
+        for (Book book : books) {
+            if (book.getId() == id) {
                 return book;
             }
         }
         return null;
     }
 
-    //===============================================
-
-
 
     @Override
     public MyList<Book> findBooksByTitle(String title) {
-        return null;
+        MyList<Book> resultTitle = new MyArrayList<>();
+
+        for (Book book : books) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                resultTitle.add(book);
+            if (resultTitle.size() == 5) {
+                break;
+            }
+
+        }
+
+        return resultTitle;
     }
 
-    @Override
-    public MyList<Book> findBooksByAuthor(String author) {
-        return null;
-    }
+        @Override
+        public MyList<Book> findBooksByAuthor(String author) {
+            MyList<Book> resultAuthor = new MyArrayList<>();
 
-    @Override
-    public MyList<Book> getAllBooks() {
-        return null;
-    }
+            for (Book book : books) {
+                    if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) { //book.getAuthor().equals(author)
+                        resultAuthor.add(book);
+                        if (resultAuthor.size() == 5) {
+                            break;
 
-    @Override
-    public MyList<Book> getAvailableBooks() {
-        return null;
-    }
 
-}
+                        }
+                    }
+                }
+
+                return resultAuthor;
+            }
+
+            @Override
+            public MyList<Book> getAllBooks () {
+
+
+                return books;
+
+            }
+
+
+            @Override
+            public MyList<Book> getAvailableBooks () {
+
+                MyList<Book> availableBooks = new MyArrayList<>();
+                for (Book book : books) {
+                    if (book.isAvailable()) {
+                        availableBooks.add(book);
+                    }
+                }
+                return availableBooks;
+
+
+            }
+
+        }
