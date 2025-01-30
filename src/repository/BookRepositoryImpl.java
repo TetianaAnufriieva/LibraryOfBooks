@@ -44,13 +44,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
-    /**
-     * @Lena
-     * редактирование (изменение) книги
-     * @param id
-     * @param title
-     * @param author
-     */
+     // редактирование (изменение) книги
     @Override
     public void bookUpdateById(int id, String title, String author) {
         Book book = findBookById(id);

@@ -21,18 +21,12 @@ public class LibraryServiceImpl implements LibraryService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * @return
-     * @Lena получить активного пользователя
-     */
+     // получить активного пользователя
     public User getActiveUser() {
         return activeUser;
     }
 
-    /**
-     * @return
-     * @Lena получить список всех пользователей
-     */
+     // получить список всех пользователей
     @Override
     public MyList<User> userList() {
         MyList<User> list = userRepository.getAllUsers();
@@ -42,13 +36,7 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
-    /**
-     * @param id
-     * @param title
-     * @param author
-     * @return
-     * @Lena редактировать (изменить) книги
-     */
+ // редактировать (изменить) книги
     @Override
     public boolean bookUpdateById(int id, String title, String author) {
         Book book = bookRepository.findBookById(id);
@@ -62,13 +50,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     * @Lena войти в систему
-     * авторизация пользователя
-     */
+      // войти в систему авторизация пользователя
     @Override
     public boolean loginUser(String email, String password) {
         // Проверим есть ли такой пользователь
@@ -97,42 +79,14 @@ public class LibraryServiceImpl implements LibraryService {
         System.out.println("Пароль не верный");
         return false;
     }
-//        if (email == null || password == null) return false;
-//
-//        User user = userRepository.findUserByEmail(email);
-//
-//        if (user == null) {
-//            System.out.println("email введен неверно.");
-//            return false;
-//        }
-//
-//        if (!user.getPassword().equals(password)) {
-//            System.out.println("password введен неверно.");
-//            return false;
-//        }
-//        if (user.getRole() == Role.BLOCKED) {
-//            System.out.println("Ваша учётная запись заблокирована.");
-//            return false;
-//        }
-//        activeUser = user;
-//
-//        return true;
-//    }
 
-    /**
-     * @Lena выйти из системы
-     * вылогиниться
-     */
+      // выйти из системы вылогиниться
     @Override
     public void logoutUser() {
         activeUser = null;
     }
 
-    /**
-     * @param id
-     * @return
-     * @Lena удалить книгу
-     */
+      // удалить книгу
     @Override
     public boolean removeBook(int id) {
         int i = -1;
@@ -184,12 +138,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
-    /**
-     * @param email
-     * @param role
-     * @return
-     * @Lena обновить статус пользователя
-     */
+      //обновить статус пользователя
     @Override
     public boolean userStatusUpdate(String email, Role role) {
         User user = userRepository.findUserByEmail(email);
@@ -200,12 +149,7 @@ public class LibraryServiceImpl implements LibraryService {
         return false;
     }
 
-    /**
-     * @param email
-     * @param newPassword
-     * @return
-     * @Lena обновить пароль
-     */
+      // обновить пароль
     @Override
     public boolean updatePassword(String email, String newPassword) {
         User user = userRepository.findUserByEmail(email);
@@ -221,11 +165,7 @@ public class LibraryServiceImpl implements LibraryService {
         return false;
     }
 
-    /**
-     * @param email
-     * @return
-     * @Lena заблокировать пользователя
-     */
+      //заблокировать пользователя
     @Override
     public boolean isUserBlocked(String email) {
         User user = userRepository.findUserByEmail(email);
@@ -236,21 +176,14 @@ public class LibraryServiceImpl implements LibraryService {
         }
     }
 
-    /**
-     * @param email
-     * @return
-     * @Lena существует ли такой email
-     */
+      // существует ли такой email
     @Override
     public boolean isEmailExist(String email) {
         return userRepository.isEmailExist(email);
     }
 
-    /**
-     * @param bookId
-     * @return
-     * @Lena взять книгу
-     */
+
+      // взять книгу
     @Override
     public Book borrowBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -266,11 +199,7 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
-    /**
-     * @param bookId
-     * @return
-     * @Lena вернуть книгу
-     */
+      // вернуть книгу
     @Override
     public Book returnBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -288,12 +217,7 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     * @Lena зарегистрировать пользователя
-     */
+     // зарегистрировать пользователя
     @Override
     public boolean registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {

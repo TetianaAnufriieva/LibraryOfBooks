@@ -28,11 +28,6 @@ public interface UserRepository {
     // обновление пароля
     boolean updatePassword(String email, String newPassword);
 
-    /**
-     * @Lena
-     * обновление статуса
-     * @param email
-     * @param role
-     */
+    // обновление статуса
     public void userStatusUpdate(String email, Role role);
 }

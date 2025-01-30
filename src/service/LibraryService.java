@@ -8,86 +8,34 @@ import utils.MyList;
 public interface LibraryService {
 
 
-    /**
-     * @Lena
-     * обновить статус
-     * @param email
-     * @param role
-     * @return
-     */
+     // обновить статус
     boolean userStatusUpdate(String email, Role role);
 
-    /**
-     * @Lena
-     * обновить пароль
-     * @param email
-     * @param newPassword
-     * @return
-     */
+     // обновить пароль
     boolean updatePassword(String email, String newPassword);
 
-    /**
-     * @Lena
-     * пользователь заблокирован
-     * @param email
-     * @return
-     */
+     // пользователь заблокирован
     boolean isUserBlocked(String email);
 
-    /**
-     * @Lena
-     * существует ли такой email
-     * @param email
-     * @return User
-     */
+     // существует ли такой email
     boolean isEmailExist(String email);
 
-    /**
-     * @Lena
-     * взять книгу
-     * @param bookId
-     * @return Book
-     */
+     // взять книгу
     Book borrowBook(int bookId);
 
-    /**
-     * @Lena
-     * вернуть книгу
-     * @param bookId
-     * @return Book
-     */
+     // вернуть книгу
     Book returnBook(int bookId);
 
-    /**
-     * @Lena
-     * зарегистрировать пользователя
-     * @param email
-     * @param password
-     * @return User
-     */
+     // зарегистрировать пользователя
     boolean registerUser(String email, String password);
 
-    /**
-     * @Lena
-     * залогиниться
-     * @param email
-     * @param password
-     * @return boolean
-     */
+     // залогиниться
     boolean loginUser (String email, String password);
 
-    /**
-     * @Lena
-     * вылогиниться
-     */
+     // вылогиниться
     void logoutUser();
 
-    /**
-     * @Lena
-     * удалить книгу
-     * @param id
-     * @return boolean
-     */
+     // удалить книгу
     boolean removeBook(int id);
 //============================================================
     //todo не void. Надо проверять, что пользователь залогинился как админ
@@ -105,27 +53,12 @@ public interface LibraryService {
     // todo список всех книг для меню администратора
     MyList<Book> listAllBooksAdmin();
 
-    /**
-     * @Lena
-     * получить активного пользователя
-     * @return
-     */
+     // получить активного пользователя
    User getActiveUser();
 
-    /**
-     * @Lena
-     * список всех пользователей
-     * @return
-     */
+     // список всех пользователей
     MyList<User> userList();
 
-    /**
-     * @Lena
-     * редактировать (изменить) книги
-     * @param id
-     * @param title
-     * @param author
-     * @return
-     */
+     // редактировать (изменить) книги
     boolean bookUpdateById(int id,String title,String author);
 }
