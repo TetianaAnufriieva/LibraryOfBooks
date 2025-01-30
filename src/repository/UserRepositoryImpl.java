@@ -64,11 +64,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MyList<User> getAllUsers() {
-        // Предполагаем, что MyList - это обертка над ArrayList
-        MyList<User> myList = new MyList<>();
-
-        myList.addAll((User) users);
         return users;
+
     }
 
     @Override
