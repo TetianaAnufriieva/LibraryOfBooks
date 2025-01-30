@@ -226,18 +226,18 @@ public class LibraryServiceImpl implements LibraryService {
 
  
     @Override
-    public User registerUser(String email, String password) {
+    public boolean registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {
             System.out.println("Некорректно введен email.");
-            return null;
+            return Boolean.parseBoolean(null);
         }
         if (!PersonValidation.isPasswordValid(password)) {
             System.out.println("Некорректно введен пароль.");
-            return null;
+            return Boolean.parseBoolean(null);
         }
         if (userRepository.isEmailExist(email)) {
             System.out.println("Пользователь с таким email уже существует.");
-            return null;
+            return Boolean.parseBoolean(null);
         }
 
         User user = userRepository.addUser(email, password);
