@@ -106,10 +106,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     }
-//TODO
-    @Override
-    public void userStatusUpdate(final String email, final Role role) {
 
+    @Override
+    public void userStatusUpdate(String email, Role role) {
+        User user = findUserByEmail(email);
+        user.setRole(role);
     }
 }
 
