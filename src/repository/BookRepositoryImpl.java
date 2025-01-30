@@ -44,6 +44,14 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
+     // редактирование (изменение) книги
+    @Override
+    public void bookUpdateById(int id, String title, String author) {
+        Book book = findBookById(id);
+        book.setTitle(title);
+        book.setAuthor(author);
+    }
+
     // удаление книги по id
     @Override
     public boolean removeBook(int id) {

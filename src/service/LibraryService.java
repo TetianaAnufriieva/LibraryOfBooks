@@ -1,56 +1,41 @@
 package service;
 
 import model.Book;
+import model.Role;
 import model.User;
 import utils.MyList;
 
 public interface LibraryService {
-    /**
-     * @Lena
-     * взять книгу
-     * @param bookId
-     * @return Book
-     */
+
+
+     // обновить статус
+    boolean userStatusUpdate(String email, Role role);
+
+     // обновить пароль
+    boolean updatePassword(String email, String newPassword);
+
+     // пользователь заблокирован
+    boolean isUserBlocked(String email);
+
+     // существует ли такой email
+    boolean isEmailExist(String email);
+
+     // взять книгу
     Book borrowBook(int bookId);
 
-    /**
-     * @Lena
-     * вернуть книгу
-     * @param bookId
-     * @return Book
-     */
+     // вернуть книгу
     Book returnBook(int bookId);
 
-    /**
-     * @Lena
-     * зарегистрировать пользователя
-     * @param email
-     * @param password
-     * @return User
-     */
-    User registerUser(String email, String password);
+     // зарегистрировать пользователя
+    boolean registerUser(String email, String password);
 
-    /**
-     * @Lena
-     * залогиниться
-     * @param email
-     * @param password
-     * @return boolean
-     */
+     // залогиниться
     boolean loginUser (String email, String password);
 
-    /**
-     * @Lena
-     * вылогиниться
-     */
+     // вылогиниться
     void logoutUser();
 
-    /**
-     * @Lena
-     * удалить книгу
-     * @param id
-     * @return boolean
-     */
+     // удалить книгу
     boolean removeBook(int id);
 //============================================================
     //todo не void. Надо проверять, что пользователь залогинился как админ
@@ -68,4 +53,12 @@ public interface LibraryService {
     // todo список всех книг для меню администратора
     MyList<Book> listAllBooksAdmin();
 
+     // получить активного пользователя
+   User getActiveUser();
+
+     // список всех пользователей
+    MyList<User> userList();
+
+     // редактировать (изменить) книги
+    boolean bookUpdateById(int id,String title,String author);
 }

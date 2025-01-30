@@ -72,12 +72,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isEmailExist(String email) {
+ 
         for (User user : users) {
             if (user.getEmail().equals(email)) {
                 return true;
             }
         }
         return false;
+ 
     }
 
     @Override
@@ -97,7 +99,7 @@ public class UserRepositoryImpl implements UserRepository {
             System.out.println("New password cannot be empty or null.");
             return false;
         }
-
+ 
         user.setPassword(newPassword);
         System.out.println("Password updated successfully");
         return true;

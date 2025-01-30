@@ -1,5 +1,6 @@
 package repository;
 
+import model.Role;
 import model.User;
 import utils.MyList;
 
@@ -26,4 +27,6 @@ public interface UserRepository {
     // обновление пароля
     boolean updatePassword(String email, String newPassword);
 
+    // обновление статуса
+    public void userStatusUpdate(String email, Role role);
 }

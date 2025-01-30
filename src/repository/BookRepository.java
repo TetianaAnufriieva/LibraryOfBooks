@@ -37,6 +37,9 @@ CRUD - операция
     // доступна книга или нет
     void updateBookStatus (int id, boolean newStatus);
 
+     //редактирование (изменить) книги
+
+    public void bookUpdateById(int id,String title, String author);
     // удаление
     boolean removeBook(int id);
 

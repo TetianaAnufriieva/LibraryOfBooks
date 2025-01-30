@@ -21,46 +21,72 @@ public class LibraryServiceImpl implements LibraryService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     * @Lena войти в систему
-     * авторизация пользователя
-     */
+     // получить активного пользователя
+    public User getActiveUser() {
+        return activeUser;
+    }
+ 
+
+     // получить список всех пользователей
     @Override
-    public boolean loginUser(String email, String password) {
-        if (email == null || password == null) return false;
-
-        User user = userRepository.findUserByEmail(email);
-
-        if (user == null) {
-            System.out.println("email введен неверно.");
-            return false;
+    public MyList<User> userList() {
+        MyList<User> list = userRepository.getAllUsers();
+        if (list != null) {
+            return list;
         }
-
-        if (!user.getPassword().equals(password)) {
-            System.out.println("password введен неверно.");
-            return false;
-        }
-        if (user.getRole() == Role.BLOCKED) {
-            System.out.println("Ваша учётная запись заблокирована.");
-            return false;
-        }
-        activeUser = user;
-
-        return true;
+        return null;
     }
 
-    /**
-     * @Lena выйти из системы
-     * вылогиниться
-     */
+ // редактировать (изменить) книги
+    @Override
+    public boolean bookUpdateById(int id, String title, String author) {
+        Book book = bookRepository.findBookById(id);
+        if (book != null) {
+            bookRepository.bookUpdateById(id, title, author);
+            return true;
+        } else {
+            System.out.println("Такая книга не существует.");
+        }
+        return false;
+    }
+
+
+      // войти в систему авторизация пользователя
+    @Override
+    public boolean loginUser(String email, String password) {
+        // Проверим есть ли такой пользователь
+        if (!userRepository.isEmailExist(email)) {
+            System.out.println("Пользователя с Email - " + email + " нет ! Сначала зарегистрируйтесь");
+            return false;
+        }
+
+        User user = userRepository.findUserByEmail(email);
+        if (user != null && user.getPassword().equals(password)) {
+            if (user.getRole() == Role.ADMIN) {
+                activeUser = user;
+                activeUser.setRole(Role.ADMIN);
+                return true;
+            }
+            if (user.getRole() == Role.USER) {
+                activeUser = user;
+                activeUser.setRole(Role.USER);
+                return true;
+            }
+            if (user.getRole() == Role.BLOCKED) {
+                System.out.println("Вы ЗАБЛОКИРОВАНЫ ! Обратитесь к администратору");
+                return false;
+            }
+        }
+        System.out.println("Пароль не верный");
+        return false;
+    }
+ 
     @Override
     public void logoutUser() {
         activeUser = null;
     }
-
+ 
+ 
 
     @Override
     public boolean removeBook(int id) {
@@ -119,11 +145,52 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
-    /**
-     * @param bookId
-     * @return
-     * @Lena взять книгу
-     */
+ 
+      //обновить статус пользователя
+    @Override
+    public boolean userStatusUpdate(String email, Role role) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            userRepository.userStatusUpdate(email, role);
+            return true;
+        }
+        return false;
+    }
+
+      // обновить пароль
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            if (PersonValidation.isPasswordValid(newPassword)) {
+                userRepository.updatePassword(email, newPassword);
+                return true;
+            } else {
+                System.out.println("Некорректно введен пароль.");
+            }
+        }
+
+        return false;
+    }
+
+      //заблокировать пользователя
+    @Override
+    public boolean isUserBlocked(String email) {
+        User user = userRepository.findUserByEmail(email);
+        if (user.getRole() == Role.BLOCKED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+      // существует ли такой email
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.isEmailExist(email);
+    }
+
+ 
     @Override
     public Book borrowBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -131,18 +198,15 @@ public class LibraryServiceImpl implements LibraryService {
             if (book.isAvailable() == true) {
                 book.setAvailable(false);
                 return book;
+            } else {
+                System.out.println("Книга уже взята.");
             }
         }
         System.out.println("Такая книга не существует.");
-
         return null;
     }
-
-    /**
-     * @param bookId
-     * @return
-     * @Lena вернуть книгу
-     */
+ 
+ 
     @Override
     public Book returnBook(int bookId) {
         Book book = bookRepository.findBookById(bookId);
@@ -151,6 +215,8 @@ public class LibraryServiceImpl implements LibraryService {
             if (book.isAvailable() == false) {
                 book.setAvailable(true);
                 return book;
+            } else {
+                System.out.println("Книга уже возвращена.");
             }
         }
         System.out.println("Такая книга не существует.");
@@ -158,12 +224,7 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     * @Lena зарегистрировать пользователя
-     */
+ 
     @Override
     public User registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {
@@ -181,7 +242,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         User user = userRepository.addUser(email, password);
 
-        return user;
+        return true;
     }
 
 
