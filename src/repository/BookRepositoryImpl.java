@@ -92,8 +92,9 @@ public class BookRepositoryImpl implements BookRepository {
         @Override
         public MyList<Book> findBooksByAuthor(String author) {
             MyList<Book> resultAuthor = new MyArrayList<>();
+
             for (Book book : books) {
-                    if (book.getAuthor().contains(author)) { //book.getAuthor().equals(author)
+                    if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) { //book.getAuthor().equals(author)
                         resultAuthor.add(book);
                         if (resultAuthor.size() == 5) {
                             break;
