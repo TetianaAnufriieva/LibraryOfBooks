@@ -44,6 +44,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void removeUser(String email) {
+        User user = findUserByEmail(email);
+        if (user != null) {
+            users.remove(user);
+        }
 
     }
 
@@ -62,13 +66,19 @@ public class UserRepositoryImpl implements UserRepository {
     public MyList<User> getAllUsers() {
         // Предполагаем, что MyList - это обертка над ArrayList
         MyList<User> myList = new MyList<>();
+
         myList.addAll((User) users);
         return users;
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        return users.stream().anyMatch(user -> user.getEmail().equals(email));
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
