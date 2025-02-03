@@ -8,6 +8,7 @@ public class Book {
     private String title;
     private String author;
     private boolean isAvailable;
+    private String userEmail;
 
     // Constructors, getters, and setters
     public Book(int id, String title, String author, boolean isAvailable) {
@@ -51,7 +52,8 @@ public class Book {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return id == book.id && isAvailable == book.isAvailable && Objects.equals(title, book.title) && Objects.equals(author, book.author);
+        return id == book.id && isAvailable == book.isAvailable && Objects.equals(title, book.title)
+                && Objects.equals(author, book.author);
     }
 
     @Override
@@ -61,11 +63,18 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isAvailable=" + isAvailable +
+        return "Book {" +
+                " id = " + id +
+                "; title = '" + title + '\'' +
+                "; author = '" + author + '\'' +
+                "; isAvailable = " + isAvailable +
                 '}';
+    }
+
+    public String getUserUse() {
+        return userEmail;
+    }
+    public void setUserUse(String email) {
+        this.userEmail = email;
     }
 }

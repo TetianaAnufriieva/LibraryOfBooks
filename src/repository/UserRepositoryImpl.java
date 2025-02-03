@@ -38,18 +38,10 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
 
     }
-
     @Override
     public boolean removeUser(String email) {
         User userToRemove = findUserByEmail(email);
-
-        if (userToRemove == null) {
-            System.out.println("User with email " + email + " not found.");
-            return false;
-        }
-
         users.remove(userToRemove);
-        System.out.println("User removed successfully: " + userToRemove);
         return true;
     }
 
@@ -85,26 +77,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean updatePassword(String email, String newPassword) {
         User user = findUserByEmail(email);
-        if (user == null) {
-            System.out.println("User not found.");
-            return false;
-        }
-
-        if (user.getRole() == Role.BLOCKED) {
-            System.out.println("Blocked users cannot change passwords.");
-            return false;
-        }
-
-        if (newPassword == null || newPassword.trim().isEmpty()) {
-            System.out.println("New password cannot be empty or null.");
-            return false;
-        }
- 
         user.setPassword(newPassword);
-        System.out.println("Password updated successfully");
         return true;
-
-
     }
 
     @Override

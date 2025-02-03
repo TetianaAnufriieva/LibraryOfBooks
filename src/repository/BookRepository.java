@@ -3,7 +3,6 @@ package repository;
 import model.Book;
 import utils.MyList;
 
-import java.util.List;
 
 public interface BookRepository {
 
@@ -43,4 +42,6 @@ CRUD - операция
     // удаление
     boolean removeBook(int id);
 
+    //список книг за пользователем
+    MyList<Book> getBooksByUser(String email);
 }

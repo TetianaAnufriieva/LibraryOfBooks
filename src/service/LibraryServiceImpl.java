@@ -28,16 +28,21 @@ public class LibraryServiceImpl implements LibraryService {
      // получить список всех пользователей
     @Override
     public MyList<User> userList() {
-        MyList<User> list = userRepository.getAllUsers();
-        if (list != null) {
-            return list;
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Получить список пользователей может только администратор.");
+            return null;
         }
-        return null;
+            return userRepository.getAllUsers();
     }
 
  // редактировать (изменить) книги
     @Override
     public boolean bookUpdateById(int id, String title, String author) {
+
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Редактировать книги может только администратор.");
+            return false;
+        }
         Book book = bookRepository.findBookById(id);
         if (book != null) {
             bookRepository.bookUpdateById(id, title, author);
@@ -49,7 +54,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 
-      // войти в систему авторизация пользователя
+    // войти в систему авторизация пользователя
     @Override
     public boolean loginUser(String email, String password) {
         // Проверим есть ли такой пользователь
@@ -71,11 +76,11 @@ public class LibraryServiceImpl implements LibraryService {
                 return true;
             }
             if (user.getRole() == Role.BLOCKED) {
-                System.out.println("Вы ЗАБЛОКИРОВАНЫ ! Обратитесь к администратору");
+                System.out.println("Вы заблокированы! Обратитесь к администратору.");
                 return false;
             }
         }
-        System.out.println("Пароль не верный");
+        System.out.println("Пароль не верный!");
         return false;
     }
  
@@ -101,7 +106,8 @@ public class LibraryServiceImpl implements LibraryService {
         }
 
         bookRepository.removeBook(book.getId());
-        System.out.println("Книга с ID " + id + " успешно удалена.");
+        System.out.println("Книга с ID " + id + "  Автор: '"+book.getAuthor()
+                + "'  Название:'"+book.getTitle() + "' успешно удалена.");
         return true;
     }
 
@@ -127,17 +133,15 @@ public class LibraryServiceImpl implements LibraryService {
         }
 
         // проверяем, что нет такой же книги в системе
-        MyList<Book> existingBooks = bookRepository.findBooksByAuthor(author); // получаем книги из репозитория
-        for (Book book : existingBooks) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
+        for (Book book : bookRepository.getAllBooks()) {
+            if (book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author)) {
                 System.out.println("Book with the same title and author has already existed in the system: " + book);
                 return null;
             }
         }
-
         // добавляем книгу
         Book newBook = bookRepository.addBook(title, author);
-        System.out.println("Book was added successfully: " + newBook);
+        System.out.println("Книга: " + newBook);
         return newBook;
 
     }
@@ -147,6 +151,11 @@ public class LibraryServiceImpl implements LibraryService {
       //обновить статус пользователя
     @Override
     public boolean userStatusUpdate(String email, Role role) {
+
+        if ((activeUser == null) || (activeUser.getRole() != Role.ADMIN)) {
+            System.out.println("Изменить статус пользователя может только администратор!");
+            return false;
+        }
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
             userRepository.userStatusUpdate(email, role);
@@ -158,16 +167,23 @@ public class LibraryServiceImpl implements LibraryService {
       // обновить пароль
     @Override
     public boolean updatePassword(String email, String newPassword) {
+
+        if ((activeUser == null) || (activeUser.getRole() != Role.ADMIN)) {
+            System.out.println("Изменить пароль пользователя может только администратор!");
+            return false;
+        }
+
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
             if (PersonValidation.isPasswordValid(newPassword)) {
                 userRepository.updatePassword(email, newPassword);
                 return true;
             } else {
-                System.out.println("Некорректно введен пароль.");
+                System.out.println("Пароль - "+newPassword+" не корректный.");
             }
+        } else {
+            System.out.println("Пользователя с Email - "+email+" не существует!");
         }
-
         return false;
     }
 
@@ -175,7 +191,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean isUserBlocked(String email) {
         User user = userRepository.findUserByEmail(email);
-        if (user.getRole() == Role.BLOCKED) {
+        if (user != null && user.getRole() == Role.BLOCKED) {
             return true;
         } else {
             return false;
@@ -195,12 +211,14 @@ public class LibraryServiceImpl implements LibraryService {
         if (book != null) {
             if (book.isAvailable() == true) {
                 book.setAvailable(false);
+                book.setUserUse(activeUser.getEmail());
                 return book;
             } else {
-                System.out.println("Книга уже взята.");
+                System.out.println("Книга с id: " + bookId + " занята");
             }
+        } else {
+            System.out.println("Книга с id: " + bookId + " не существует");
         }
-        System.out.println("Такая книга не существует.");
         return null;
     }
  
@@ -210,19 +228,43 @@ public class LibraryServiceImpl implements LibraryService {
         Book book = bookRepository.findBookById(bookId);
 
         if (book != null) {
-            if (book.isAvailable() == false) {
+            if (book.isAvailable() == false
+                    && book.getUserUse().equals(activeUser.getEmail())==true) {
                 book.setAvailable(true);
+                book.setUserUse(null);
                 return book;
-            } else {
-                System.out.println("Книга уже возвращена.");
+            }   else {
+                System.out.println("Вы не брали книгу Название: " + book.getTitle() +
+                        "  Автор: " + book.getAuthor() +"  ID: " + book.getId());
             }
+        } else {
+            System.out.println("Книга с id: " + bookId + " не существует");
         }
-        System.out.println("Такая книга не существует.");
 
         return null;
     }
+    @Override
+    public boolean removeUser(String email) {
+        if (activeUser == null || activeUser.getRole() != Role.ADMIN) {
+            System.out.println("Удалять пользователей может только администратор.");
+            return false;
+        }
+        boolean isDeletedUser;
+        boolean isExist = isEmailExist(email);
+        if(isExist == true) {
+            if (activeUser.getEmail().equals(email) != true) {
+                isDeletedUser = userRepository.removeUser(email);
+                if (isDeletedUser == true) {
+                    return true;
+                }
+            }
+        } else {
+            System.out.println("Пользователь - " + email + " не существует.");
+        }
+        return false;
+    }
 
- 
+
     @Override
     public boolean registerUser(String email, String password) {
         if (!PersonValidation.isEmailValid(email)) {
@@ -239,7 +281,9 @@ public class LibraryServiceImpl implements LibraryService {
         }
 
         User user = userRepository.addUser(email, password);
-
+        if (activeUser == null) {
+            activeUser = user;
+        }
         return true;
     }
 
@@ -269,12 +313,29 @@ public class LibraryServiceImpl implements LibraryService {
         return bookRepository.getAvailableBooks();
     }
 
+
     @Override
     public MyList<Book> listAllBooksAdmin() {
-        if ((activeUser == null) || (activeUser.getRole() != Role.ADMIN)) {
-            System.out.println("Access denied for user. Only ADMIN has right to add a new book!");
-            return null;
-        }
         return bookRepository.getAllBooks();
+    }
+
+    @Override
+    public MyList<Book> getBooksByUser(String email) {
+        MyList<Book> list = bookRepository.getBooksByUser(email);
+        if (list != null) {
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    public String findUserByBookId(int id) {
+        for (Book book : bookRepository.getAllBooks()) {
+            if (book.getId() == id) {
+                return book.getUserUse();
+            }
+        }
+        System.out.println("Вы ввели не правильный id книги");
+        return null;
     }
 }
