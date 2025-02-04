@@ -210,4 +210,40 @@ public class LibraryServiceImplTest {
 //        assertNotNull(bookRepository.findBookById(1));
 //    }
 
+
+    @Test
+    void isEmailExist() {
+        String isEmailExist = "test@gmail.com";
+        //user.setEmail(isEmailExist);
+        // boolean user = libraryService.isEmailExist("notest@gmail.com");
+
+        assertFalse(libraryService.isEmailExist("testgmail.com"));
+        equals(libraryService.isEmailExist("test@gmail.com"));
+
+
+    }
+
+//         @Test
+//        void borrowBook() {
+//
+//
+//            Book book = libraryService.borrowBook(1);
+//            assertNotNull(book,"книга не null");
+//
+//          // assertFalse(book.isAvailable(),"книга не доступна");
+//        }
+//
+//        @Test
+//        void returnBook() {
+//
+//            Book book = libraryService.returnBook(1);
+//            assertNull(book,"книга не null");
+//            assertTrue(book.isAvailable(),"книга доступна");
+
+
+ // }
+
+
+
+
 }
