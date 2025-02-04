@@ -26,7 +26,8 @@ public interface LibraryService {
      // вернуть книгу
     Book returnBook(int bookId);
 
-
+    // удалить пользователя
+    boolean removeUser(String email);
 
      // залогиниться
     boolean loginUser (String email, String password);
@@ -37,21 +38,19 @@ public interface LibraryService {
      // удалить книгу
     boolean removeBook(int id);
 //============================================================
-    //todo не void. Надо проверять, что пользователь залогинился как админ
+    //Надо проверять, что пользователь залогинился как админ
     Book addBook(String title, String author);
 
     boolean registerUser(String email, String password);
 
-    // todo contains or equals
     MyList<Book> searchBooksByTitle(String title);
 
-    // todo contains
     MyList<Book> searchBooksByAuthor(String author);
 
     //список доступных книг
     MyList<Book> listAvailableBooks();
 
-    // todo список всех книг для меню администратора
+    // список всех книг для меню администратора
     MyList<Book> listAllBooksAdmin();
 
      // получить активного пользователя
@@ -62,4 +61,11 @@ public interface LibraryService {
 
      // редактировать (изменить) книги
     boolean bookUpdateById(int id,String title,String author);
+
+    // список книг пользователя
+    public MyList<Book> getBooksByUser(String email);
+
+    //Поиск Пользователя у которого книга
+    public String findUserByBookId(int id);
+
 }

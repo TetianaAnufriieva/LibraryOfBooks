@@ -1,8 +1,5 @@
 package model;
 
-import utils.MyArrayList;
-import utils.MyList;
-
 import java.util.Objects;
 
 public class User {
@@ -10,20 +7,12 @@ public class User {
     private String password;
     private Role role;
 
-    private MyList<Book> userBooks;
-
 
     // Constructors, getters, and setters
-    public User(String email, String password, Role role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.userBooks = new MyArrayList<>();
-    }
-
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
     }
 
     public String getEmail() {
@@ -54,23 +43,22 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(userBooks, user.userBooks);
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, role, userBooks);
+        return Objects.hash(email, password, role);
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", userBooks=" + userBooks +
+        return "User { " +
+                " email = '" + email + '\'' +
+                "; password = '" + password + '\'' +
+                "; role = " + role +
                 '}';
     }
 }

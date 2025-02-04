@@ -22,5 +22,4 @@ public class BooksApp {
         // Запуск приложения
         menu.start();
     }
-
 }

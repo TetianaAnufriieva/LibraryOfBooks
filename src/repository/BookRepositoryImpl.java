@@ -4,7 +4,6 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BookRepositoryImpl implements BookRepository {
@@ -44,7 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
-     // редактирование (изменение) книги
+    // редактирование (изменение) книги
     @Override
     public void bookUpdateById(int id, String title, String author) {
         Book book = findBookById(id);
@@ -88,54 +87,50 @@ public class BookRepositoryImpl implements BookRepository {
         for (Book book : books) {
             if (book.getTitle().toLowerCase().contains(title.toLowerCase()))
                 resultTitle.add(book);
-            if (resultTitle.size() == 5) {
-                break;
-            }
-
         }
 
         return resultTitle;
     }
 
-        @Override
-        public MyList<Book> findBooksByAuthor(String author) {
-            MyList<Book> resultAuthor = new MyArrayList<>();
+    @Override
+    public MyList<Book> findBooksByAuthor(String author) {
+        MyList<Book> resultAuthor = new MyArrayList<>();
 
-            for (Book book : books) {
-                    if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) { //book.getAuthor().equals(author)
-                        resultAuthor.add(book);
-                        if (resultAuthor.size() == 5) {
-                            break;
-
-
-                        }
-                    }
-                }
-
-                return resultAuthor;
+        for (Book book : books) {
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) { //book.getAuthor().equals(author)
+                resultAuthor.add(book);
             }
-
-            @Override
-            public MyList<Book> getAllBooks () {
-
-
-                return books;
-
-            }
-
-
-            @Override
-            public MyList<Book> getAvailableBooks () {
-
-                MyList<Book> availableBooks = new MyArrayList<>();
-                for (Book book : books) {
-                    if (book.isAvailable()) {
-                        availableBooks.add(book);
-                    }
-                }
-                return availableBooks;
-
-
-            }
-
         }
+
+        return resultAuthor;
+    }
+
+    @Override
+    public MyList<Book> getAllBooks() {
+        return books;
+    }
+
+
+    @Override
+    public MyList<Book> getAvailableBooks() {
+
+        MyList<Book> availableBooks = new MyArrayList<>();
+        for (Book book : books) {
+            if (book.isAvailable()) {
+                availableBooks.add(book);
+            }
+        }
+        return availableBooks;
+    }
+
+    @Override
+    public MyList<Book> getBooksByUser(String email) {
+        MyList<Book> list = new MyArrayList<>();
+        for (Book book : books) {
+            if (email.equals(book.getUserUse())) {
+                list.add(book);
+            }
+        }
+        return list;
+    }
+}
