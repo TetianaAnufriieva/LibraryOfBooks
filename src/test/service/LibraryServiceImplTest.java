@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.Role;
+import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LibraryServiceImplTest {
 
     private static LibraryService libraryService;
+    private BookRepositoryImpl bookRepository;
+    private UserRepositoryImpl userRepository;
+    private Role activeUser;
+
+
+
 
     @BeforeAll
     static void setup() {
@@ -156,4 +163,51 @@ public class LibraryServiceImplTest {
         boolean result = libraryService.isUserBlocked(email);
         equals(result);
     }
+
+    //============================================
+
+    @Test
+    public void testLoginUser() {
+        String email = "test@example.com";
+        String password = "password";
+        boolean result = libraryService.loginUser(email, password);
+        equals(result);
+    }
+
+    @Test
+    public void logoutUser() {
+        activeUser = null;
+    }
+
+
+//    @Test
+//    public void testRemoveBook_AdminUser_ValidBookId_ReturnsTrue() {
+//        // Set up test data
+//        User adminUser = new User("admin", Role.ADMIN.toString());
+//        activeUser = adminUser;
+//        bookRepository.addBook("book", "author");
+//
+//        // Call the method being tested
+//        boolean result = libraryService.removeBook(1);
+//
+//        // Verify the result
+//        equals(result);
+//        assertNotNull(bookRepository.findBookById(1));
+//    }
+//
+//    @Test
+//    public void testRemoveBook_NonAdminUser_ValidBookId_ReturnsFalse() {
+//        // Set up test data
+//        User nonAdminUser = new User("nonadmin", Role.USER.toString());
+//        activeUser = nonAdminUser;
+//        bookRepository.addBook("book2", "author2");
+//
+//        // Call the method being tested
+//        boolean result = libraryService.removeBook(1);
+//
+//        // Verify the result
+//        assertFalse(result);
+//        assertNotNull(bookRepository.findBookById(1));
+//    }
+
 }
