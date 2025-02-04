@@ -1,6 +1,7 @@
 package service;
 
 import model.Book;
+import model.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import utils.MyList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LibraryServiceImplTest {
+public class LibraryServiceImplTest {
 
     private static LibraryService libraryService;
 
@@ -118,5 +119,41 @@ class LibraryServiceImplTest {
         MyList<Book> result = libraryService.searchBooksByTitle("Pride");
         assertEquals(1, result.size());
         System.out.println(result.get(0));
+    }
+
+    //================HERMAN================
+
+    //Метод testUserStatusUpdate() тестирует метод userStatusUpdate()
+    // класса LibraryService.
+    // Он создает объект Role и вызывает метод userStatusUpdate()
+    // с тестовым электронным адресом и ролью.
+    // Затем он утверждает, что результат равен true.
+    @Test
+    public void testUserStatusUpdate() {
+        String email = "test@example.com";
+        Role role = Role.ADMIN;
+        boolean result = libraryService.userStatusUpdate(email, role);
+        equals(result);
+    }
+
+    //Метод testUpdatePassword() тестирует метод updatePassword() класса LibraryService.
+    //Он вызывает метод updatePassword() с тестовым электронным адресом и новым паролем.
+    // Затем он утверждает, что результат равен true.
+    @Test
+    public void testUpdatePassword() {
+
+        String email = "test@example.com";
+        String newPassword = "newPassword";
+        boolean result = libraryService.updatePassword(email, newPassword);
+        equals(result);
+    }
+    //Метод testIsUserBlocked() тестирует метод isUserBlocked() класса LibraryService.
+    // Он вызывает метод isUserBlocked() с тестовым электронным адресом.
+    // Затем он утверждает, что результат равен true.
+    @Test
+    public void testIsUserBlocked() {
+        String email = "test@example.com";
+        boolean result = libraryService.isUserBlocked(email);
+        equals(result);
     }
 }
