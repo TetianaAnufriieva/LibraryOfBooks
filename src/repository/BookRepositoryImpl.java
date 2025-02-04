@@ -133,4 +133,15 @@ public class BookRepositoryImpl implements BookRepository {
         }
         return list;
     }
+
+    @Override
+    public MyList<Book> listBusyBooks() {
+        MyList<Book> busyBooks = new MyArrayList<>();
+        for (Book book : books) {
+            if (book.isAvailable() == false) {
+                busyBooks.add(book);
+            }
+        }
+        return busyBooks;
+    }
 }

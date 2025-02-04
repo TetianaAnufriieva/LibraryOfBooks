@@ -44,13 +44,17 @@ public class LibraryServiceImpl implements LibraryService {
             return false;
         }
         Book book = bookRepository.findBookById(id);
-        if (book != null) {
-            bookRepository.bookUpdateById(id, title, author);
-            return true;
-        } else {
+        if (book == null) {
             System.out.println("Такая книга не существует.");
+            return false;
         }
-        return false;
+        if (book.isAvailable() == false) {
+            System.out.println("Книга занята.");
+            return false;
+        }
+        bookRepository.bookUpdateById(id, title, author);
+        return true;
+
     }
 
 
@@ -104,11 +108,16 @@ public class LibraryServiceImpl implements LibraryService {
             System.out.println("Книга не найдена.");
             return false;
         }
+        if (book.isAvailable() == false) {
+            System.out.println("Книга занята.");
+            return false;
+        }
 
         bookRepository.removeBook(book.getId());
         System.out.println("Книга с ID " + id + "  Автор: '"+book.getAuthor()
                 + "'  Название:'"+book.getTitle() + "' успешно удалена.");
         return true;
+
     }
 
 
@@ -337,5 +346,10 @@ public class LibraryServiceImpl implements LibraryService {
         }
         System.out.println("Вы ввели не правильный id книги");
         return null;
+    }
+
+    @Override
+    public MyList<Book> listBusyBooks() {
+        return bookRepository.listBusyBooks();
     }
 }
