@@ -181,35 +181,35 @@ public class LibraryServiceImplTest {
     }
 
 
-//    @Test
-//    public void testRemoveBook_AdminUser_ValidBookId_ReturnsTrue() {
-//        // Set up test data
-//        User adminUser = new User("admin", Role.ADMIN.toString());
-//        activeUser = adminUser;
-//        bookRepository.addBook("book", "author");
-//
-//        // Call the method being tested
-//        boolean result = libraryService.removeBook(1);
-//
-//        // Verify the result
-//        equals(result);
-//        assertNotNull(bookRepository.findBookById(1));
-//    }
-//
-//    @Test
-//    public void testRemoveBook_NonAdminUser_ValidBookId_ReturnsFalse() {
-//        // Set up test data
-//        User nonAdminUser = new User("nonadmin", Role.USER.toString());
-//        activeUser = nonAdminUser;
-//        bookRepository.addBook("book2", "author2");
-//
-//        // Call the method being tested
-//        boolean result = libraryService.removeBook(1);
-//
-//        // Verify the result
-//        assertFalse(result);
-//        assertNotNull(bookRepository.findBookById(1));
-//    }
+    @Test
+    public void testRemoveBook_AdminUser_ValidBookId_ReturnsTrue() {
+        // Set up test data
+        User adminUser = new User("admin", Role.ADMIN.toString());
+        activeUser = adminUser.getRole();
+        bookRepository.addBook("book", "author");
+
+        // Call the method being tested
+        boolean result = libraryService.removeBook(1);
+
+        // Verify the result
+        equals(result);
+        assertNotNull(bookRepository.findBookById(1));
+    }
+
+    @Test
+    public void testRemoveBook_NonAdminUser_ValidBookId_ReturnsFalse() {
+        // Set up test data
+        User nonAdminUser = new User("nonadmin", Role.USER.toString());
+        activeUser = nonAdminUser.getRole();
+        bookRepository.addBook("book2", "author2");
+
+        // Call the method being tested
+        boolean result = libraryService.removeBook(1);
+
+        // Verify the result
+        assertFalse(result);
+        assertNotNull(bookRepository.findBookById(1));
+    }
 
 
     @Test
@@ -227,13 +227,17 @@ public class LibraryServiceImplTest {
 //         @Test
 //        void borrowBook() {
 //
+//             libraryService = new LibraryServiceImpl(bookRepository, userRepository);
+//             Book book = libraryService.borrowBook(1);
+//             if (book != null && book.isAvailable()) {
+//                 libraryService.borrowBook(1);
+//                 book = libraryService.borrowBook(1);
+//                 assertNotNull(book, "книга не null");
+//                 assertFalse(book.isAvailable(), "книга не доступна");
+//            }
 //
-//            Book book = libraryService.borrowBook(1);
-//            assertNotNull(book,"книга не null");
-//
-//          // assertFalse(book.isAvailable(),"книга не доступна");
 //        }
-//
+
 //        @Test
 //        void returnBook() {
 //
