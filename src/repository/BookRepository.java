@@ -44,4 +44,7 @@ CRUD - операция
 
     //список книг за пользователем
     MyList<Book> getBooksByUser(String email);
+
+    //список занятых книг
+    MyList<Book> listBusyBooks();
 }

@@ -5,6 +5,7 @@ import model.Role;
 import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
@@ -243,6 +244,53 @@ public class LibraryServiceImplTest {
 
  // }
 
+
+    @BeforeEach
+    public void init() {
+        this.bookRepository = new BookRepositoryImpl();
+        this.userRepository = new UserRepositoryImpl();
+        this.libraryService = new LibraryServiceImpl(bookRepository, userRepository);
+        this.activeUser = Role.USER;
+    }
+
+
+
+
+    @Test
+    void testSearchBooksByAuthorWithExistingAuthor() {
+        MyList<Book> booksByAuthorA = libraryService.searchBooksByAuthor("George Orwell");
+        assertNotNull(booksByAuthorA, "Результат не должен быть null");
+        assertEquals(1, booksByAuthorA.size(), "Должно быть 1 книги от 'George Orwell'");
+    }
+
+    @Test
+    void testSearchBooksByAuthorWithNonExistingAuthor() {
+        MyList<Book> booksByUnknown = libraryService.searchBooksByAuthor(" J.R.R. Tolkien");
+        assertNotNull(booksByUnknown, "Результат не должен быть null");
+        assertTrue(booksByUnknown.isEmpty(), "Список должен быть пуст");
+    }
+
+    @Test
+    void testIsAvailableBooksWhenBooksAreAvailable() {
+        MyList<Book> availableBooks = libraryService.listAvailableBooks();
+        assertNotNull(availableBooks, "Результат не должен быть null");
+        assertEquals(5, availableBooks.size(), "Должно быть 5 доступные книги");
+    }
+
+    @Test
+    void testIsAvailableBooksWhenNoBooksAreAvailable() {
+        libraryService = new LibraryServiceImpl(bookRepository, userRepository);
+        libraryService.addBook(" dddddd", "ddddddd");
+        MyList<Book> availableBooks = libraryService.listAvailableBooks();
+        assertNotNull(availableBooks, "Результат не должен быть null");
+    }
+
+    @Test
+    void testListAllBooksWhenLibraryHasBooks() {
+        MyList<Book> allBooks = libraryService.listAllBooksAdmin();
+        assertNotNull(allBooks, "Результат не должен быть null");
+        assertEquals(5, allBooks.size(), "Должно быть 5 книги в библиотеке");
+    }
 
 
 

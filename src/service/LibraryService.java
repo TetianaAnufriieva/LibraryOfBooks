@@ -68,4 +68,6 @@ public interface LibraryService {
     //Поиск Пользователя у которого книга
     public String findUserByBookId(int id);
 
+    // список занятых книг
+    MyList<Book> listBusyBooks();
 }

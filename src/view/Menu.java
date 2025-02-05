@@ -76,6 +76,7 @@ public class Menu {
             System.out.println("5. Поиск книги по автору.");
             System.out.println("6. Поиск книги по названию.");
             System.out.println("7. У какого пользователя находится книга.");
+            System.out.println("8. Список занятых книг.");
             System.out.println("0. Выход из меню.");
             System.out.println();
             System.out.printf(service.getActiveUser().getRole() == Role.ADMIN ?"ВЫ АДМИНИСТРАТОР" : "ВЫ ПОЛЬЗОВАТЕЛЬ");
@@ -361,7 +362,7 @@ public class Menu {
                 }
                 break;
             case "4":
-                if (service.userList() != null) {
+                if (service.userList().size() > 0) {
                     System.out.println("Список всех пользователей.");
                     for (User user : service.userList()) {
                         System.out.printf("\nEmail: %s; Role: %s", user.getEmail(), user.getRole());
@@ -446,7 +447,7 @@ public class Menu {
                 }
                 break;
             case "9":
-                if (service.listAllBooksAdmin() != null) {
+                if (service.listAllBooksAdmin().size() > 0) {
                     System.out.println("Список всех книг: ");
                     bookPrintToConsole(service.listAllBooksAdmin());
                 } else {
@@ -462,7 +463,7 @@ public class Menu {
     private void showBookMenuCase(String input1) {
         switch (input1) {
             case "1":
-                if(service.listAllBooksAdmin()!=null) {
+                if(service.listAllBooksAdmin().size() > 0) {
                     System.out.println("Список всех книг: ");
                     bookPrintToConsole(service.listAllBooksAdmin());
                 } else {
@@ -471,7 +472,7 @@ public class Menu {
                 break;
 
             case "2":
-                if(service.listAvailableBooks()!=null) {
+                if(service.listAvailableBooks().size() > 0) {
                     System.out.println("Список свободных книг: ");
                     bookPrintToConsole(service.listAvailableBooks());
                 } else {
@@ -506,7 +507,7 @@ public class Menu {
                 System.out.print("Введите автора книги: ");
                 String inputAuthor= scanner.nextLine();
 
-                if(service.searchBooksByAuthor(inputAuthor) != null) {
+                if(service.searchBooksByAuthor(inputAuthor).size() > 0) {
                     System.out.println("Список книг по автору - " + inputAuthor + " :");
                     bookPrintToConsole(service.searchBooksByAuthor(inputAuthor));
                 } else {
@@ -519,7 +520,7 @@ public class Menu {
                 System.out.print("Введите название книги: ");
                 String inputName = scanner.nextLine();
 
-                if(service.searchBooksByTitle(inputName) != null) {
+                if(service.searchBooksByTitle(inputName).size() > 0) {
                     System.out.println("Список книг по названию - " + inputName + " :");
                     bookPrintToConsole(service.searchBooksByTitle(inputName));
 
@@ -540,6 +541,14 @@ public class Menu {
                             + service.findUserByBookId(idBook));
                 } else {
                     System.out.print("Книга с id - " + idBook + " - свободна.");
+                }
+                break;
+            case "8":
+                if(service.listBusyBooks().size() > 0) {
+                    System.out.println("Список занятых книг: ");
+                    bookPrintToConsole(service.listBusyBooks());
+                } else {
+                    System.out.println("В библиотеке нет занятых книг.");
                 }
                 break;
             default:
