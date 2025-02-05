@@ -34,25 +34,25 @@ public class Menu {
             System.out.printf(service.getActiveUser().getRole() == Role.ADMIN ?"ВЫ АДМИНИСТРАТОР" : "ВЫ ПОЛЬЗОВАТЕЛЬ");
             System.out.print("\n Сделайте выбор: ");
 
-            String choice = scanner.nextLine();
+            int choice = getIntInput();
 
-            if (choice.equals("0")) {
+            if (choice == 0) {
                 service.logoutUser();
                 break;
             }
             showMenuCase(choice);
         }
     }
-    private void showMenuCase(String choice) {
+    private void showMenuCase(int choice) {
 
         switch (choice) {
-            case "1":
+            case 1:
                 showBookMenu();
                 break;
-            case "2":
+            case 2:
                 showUserMenu();
                 break;
-            case "3":
+            case 3:
                 if (service.getActiveUser().getRole() == Role.ADMIN) {
                     showAdminMenu();
                 } else {
@@ -82,8 +82,8 @@ public class Menu {
             System.out.printf(service.getActiveUser().getRole() == Role.ADMIN ?"ВЫ АДМИНИСТРАТОР" : "ВЫ ПОЛЬЗОВАТЕЛЬ");
             System.out.println("\nСделайте выбор пункта меню.");
 
-            String input1 = scanner.nextLine();
-            if (input1.equals("0")) break;
+            int input1 = getIntInput();
+            if (input1 == 0) break;
 
             showBookMenuCase(input1);
             waitRead();
@@ -105,13 +105,13 @@ public class Menu {
             System.out.println("0. Выход из системы");
             System.out.print("\nСделайте выбор пункта меню:");
 
-            String input = scanner.nextLine();
+            int input = getIntInput();
             switch (input) {
-                case "0":
+                case 0:
                     System.out.println("До свидания!");
                     System.exit(0);
                     break;
-                case "1":
+                case 1:
                     isAutorized = authorizationUser();
                     if (isAutorized == true ) {
                         showMenu();
@@ -119,7 +119,7 @@ public class Menu {
                         System.out.println("Ошибка авторизации !");
                     }
                     break;
-                case "2":
+                case 2:
                     isRegistration = registrationUser();
                     if (isRegistration == true ) {
                         showMenu();
@@ -193,17 +193,17 @@ public class Menu {
             System.out.println("0. Выход из меню.");
             System.out.println("\nСделайте выбор пункта меню.");
 
-            String input = scanner.nextLine();
-            if (input.equals("0")) break;
+            int input = getIntInput();
+            if (input == 0) break;
             showUserMenuCase(input);
 
             waitRead();
         }
     }
 
-    private void showUserMenuCase(String input) {
+    private void showUserMenuCase(int input) {
         switch (input) {
-            case "1":
+            case 1:
                 //список книг у пользователя
                 String activeUserEmail = service.getActiveUser().getEmail();
                 MyList<Book> isActiveUserBooksList = service.getBooksByUser(activeUserEmail);
@@ -215,45 +215,25 @@ public class Menu {
                     System.out.println("У Вас нет используемых книг.");
                 }
                 break;
-            case "2":
+            case 2:
                 System.out.println("Выдача книги.");
                 System.out.println("Введите id книги: ");
 
-                String inputStr = scanner.nextLine();
+                int inputStr = getIntInput();
 
-                Integer idBookInt = checkInput(inputStr);
-
-                int idBook = 0;
-                if (idBookInt == null) {
-                    System.out.println("Некорректно введен id книги.");
-                    break;
-                } else {
-                    // из обертки Integer в int
-                    idBook = idBookInt;
-                }
-                Book take = service.borrowBook(idBook);
+                Book take = service.borrowBook(inputStr);
                 if (take != null) {
                     System.out.printf("\nId: %d; Title: %s; Author: %s",
                             take.getId(), take.getTitle(), take.getAuthor());
                 }
                 break;
-            case "3":
+            case 3:
                 System.out.println("Возврат книги.");
                 System.out.print("Введите id книги: ");
 
-                String inputStr1 = scanner.nextLine();
+                int inputStr1 = getIntInput();
 
-                Integer idBookInt1 = checkInput(inputStr1);
-
-                int idBook1 = 0;
-                if (idBookInt1 == null) {
-                    System.out.println("Некорректно введен id книги.");
-                    break;
-                } else {
-                    // из обертки Integer в int
-                    idBook1 = idBookInt1;
-                }
-                Book returnBook = service.returnBook(idBook1);
+                Book returnBook = service.returnBook(inputStr1);
                 if (returnBook != null) {
                     System.out.printf("\nId: %d; Title: %s; Author: %s",
                             returnBook.getId(), returnBook.getTitle(), returnBook.getAuthor());
@@ -262,15 +242,6 @@ public class Menu {
             default:
                 System.out.println("\nСделайте корректный выбор.");
                 break;
-        }
-    }
-
-    //метод, проверка валидности введенния чисел в консоли
-    private Integer checkInput(String input) {
-        try {
-            return Integer.valueOf(input);
-        } catch (NumberFormatException e) {
-            return null;
         }
     }
 
@@ -289,15 +260,15 @@ public class Menu {
             System.out.println("0. Выход из меню.");
             System.out.println("\nСделайте выбор пункта меню.");
 
-            String input = scanner.nextLine();
-            if (input.equals("0")) break;
+            int input = getIntInput();
+            if (input == 0) break;
 
             showAdminMenuCase(input);
             waitRead();
         }
     }
 
-    private void showAdminMenuCase(String input) {
+    private void showAdminMenuCase(int input) {
         String email;
         String password;
         String title;
@@ -308,10 +279,10 @@ public class Menu {
         int idBook;
 
         switch (input) {
-            case "1":
+            case 1:
                 registrationUser();
                 break;
-            case "2":
+            case 2:
                 System.out.println("Измененить пароль пользователя.");
                 System.out.print("Введите email пользователя: ");
                 email = scanner.nextLine();
@@ -326,26 +297,15 @@ public class Menu {
                     System.out.println("Пароль не изменен!");
                 }
                 break;
-            case "3":
+            case 3:
                 // изменить статус (role) пользователя
                 System.out.println("Измененить статус пользователя.");
                 System.out.print("Введите email пользователя: ");
                 email = scanner.nextLine();
 
                 System.out.print("Для изменения введите новый статус пользователя (1-User, 2- BLOCKED, 3-ADMIN).");
-                String inputStatusStr = scanner.nextLine();
+                int inputStatus = getIntInput();
 
-                Integer status = checkInput(inputStatusStr);
-
-                int inputStatus = 0;
-
-                if (status == null) {
-                    System.out.println("\nСделайте корректный выбор.");
-                    break;
-                } else {
-                    // из обертки Integer в int
-                    inputStatus = status;
-                }
                 Role role = null;
                 boolean isUpdate = false;
 
@@ -361,7 +321,7 @@ public class Menu {
                     System.out.println("Статус пользователя не изменен!");
                 }
                 break;
-            case "4":
+            case 4:
                 if (service.userList().size() > 0) {
                     System.out.println("Список всех пользователей.");
                     for (User user : service.userList()) {
@@ -371,7 +331,7 @@ public class Menu {
                     System.out.println("Список пользователей пуст!");
                 }
                 break;
-            case "5":
+            case 5:
                 System.out.println("Удалить пользователя.");
                 System.out.print("Введите email пользователя: ");
                 email= scanner.nextLine();
@@ -383,7 +343,7 @@ public class Menu {
                     System.out.println("Пользователь - " + email + " не удален!");
                 }
                 break;
-            case "6":
+            case 6:
                 System.out.println("Добавить новую книгу.");
                 System.out.print("Введите название книги: ");
                 title = scanner.nextLine();
@@ -398,20 +358,13 @@ public class Menu {
                     System.out.println("Книга не добавлена!");
                 }
                 break;
-            case "7":
+            case 7:
                 System.out.println("Удалить книгу.");
                 System.out.print("Введите ID книги: ");
-                String inputStr = scanner.nextLine();
+                int idBook2 = getIntInput();
 
-                Integer idBookInt = checkInput(inputStr);
-                if (idBookInt == null) {
-                    System.out.println("\nСделайте корректный выбор.");
-                    break;
-                } else {
-                    // из обертки Integer в int
-                    idBook = idBookInt;
-                }
-                isDeleteBook = service.removeBook(idBook);
+
+                isDeleteBook = service.removeBook(idBook2);
 
                 if (isDeleteBook == true) {
                     System.out.println("Книга успешно удалена.");
@@ -419,26 +372,17 @@ public class Menu {
                     System.out.println("Книга не удалена!");
                 }
                 break;
-            case "8":
+            case 8:
                 System.out.println("Редактировать книгу.");
                 System.out.print("Введите ID книги: ");
-                String inputStr1 = scanner.nextLine();
+                int idBook1 = getIntInput();
 
-                Integer idBookInt1 = checkInput(inputStr1);
-
-                if (idBookInt1 == null) {
-                    System.out.println("\nСделайте корректный выбор.");
-                    break;
-                } else {
-                    // из обертки Integer в int
-                    idBook = idBookInt1;
-                }
                 System.out.print("Введите новое название книги: ");
                 title = scanner.nextLine();
 
                 System.out.print("Введите нового автора книги: ");
                 author = scanner.nextLine();
-                isUpdateBook = service.bookUpdateById(idBook, title, author);
+                isUpdateBook = service.bookUpdateById(idBook1, title, author);
 
                 if (isUpdateBook == true) {
                     System.out.println("Книга успешно изменена.");
@@ -446,7 +390,7 @@ public class Menu {
                     System.out.println("Изменения не выполнены!");
                 }
                 break;
-            case "9":
+            case 9:
                 if (service.listAllBooksAdmin().size() > 0) {
                     System.out.println("Список всех книг: ");
                     bookPrintToConsole(service.listAllBooksAdmin());
@@ -460,9 +404,9 @@ public class Menu {
         }
     }
 
-    private void showBookMenuCase(String input1) {
+    private void showBookMenuCase(int input1) {
         switch (input1) {
-            case "1":
+            case 1:
                 if(service.listAllBooksAdmin().size() > 0) {
                     System.out.println("Список всех книг: ");
                     bookPrintToConsole(service.listAllBooksAdmin());
@@ -471,7 +415,7 @@ public class Menu {
                 }
                 break;
 
-            case "2":
+            case 2:
                 if(service.listAvailableBooks().size() > 0) {
                     System.out.println("Список свободных книг: ");
                     bookPrintToConsole(service.listAvailableBooks());
@@ -480,7 +424,7 @@ public class Menu {
                 }
                 break;
 
-            case "3":
+            case 3:
                 //TODO нет метода сортировки getBooksSortByAuthor
 //                Список всех книг,отсортированный по автору
 //                if(service.getBooksSortByAuthor() != null) {
@@ -491,7 +435,7 @@ public class Menu {
 //                }
                 break;
 
-            case "4":
+            case 4:
                 //TODO нет метода сортировки getBooksSortByTitle
                 //Список всех книг, отсортированный по названию книги
 //                if(service.getBooksSortByTitle()!=null) {
@@ -502,7 +446,7 @@ public class Menu {
 //                }
                 break;
 
-            case "5":
+            case 5:
                 System.out.println("Список книг по автору: ");
                 System.out.print("Введите автора книги: ");
                 String inputAuthor= scanner.nextLine();
@@ -515,7 +459,7 @@ public class Menu {
                 }
                 break;
 
-            case "6":
+            case 6:
                 System.out.println("Список книг по названию: ");
                 System.out.print("Введите название книги: ");
                 String inputName = scanner.nextLine();
@@ -529,7 +473,7 @@ public class Menu {
                 }
                 break;
 
-            case "7":
+            case 7:
                 System.out.println("У какого пользователя находится книга: ");
                 System.out.print("Введите id книги: ");
 
@@ -543,7 +487,7 @@ public class Menu {
                     System.out.print("Книга с id - " + idBook + " - свободна.");
                 }
                 break;
-            case "8":
+            case 8:
                 if(service.listBusyBooks().size() > 0) {
                     System.out.println("Список занятых книг: ");
                     bookPrintToConsole(service.listBusyBooks());
@@ -557,6 +501,26 @@ public class Menu {
         }
     }
 
+    /**
+     * Метод запрашивает у пользователя ввод целого числа.
+     * Проверяет, является ли ввод корректным (целым числом).
+     * В случае неверного ввода выводит сообщение и запрашивает ввод снова.
+     *
+     * @return Введенное пользователем целое число.
+     */
+    private int getIntInput() {
+        while (true) {
+            if (scanner.hasNextInt()) {
+                int input = scanner.nextInt();
+                scanner.nextLine();
+                return input;
+            } else {
+                System.out.println("Некорректный ввод! Введите число.");
+                scanner.next();
+            }
+        }
+    }
+
     private void bookPrintToConsole(MyList<Book> books) {
 
         for (Book book : books) {
@@ -565,6 +529,7 @@ public class Menu {
                     book.isAvailable() ? "Доступна" : "Не доступна.");
         }
     }
+
 }
 
 
